@@ -6,9 +6,12 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Timer;
 
 public class DistanceTravelClient implements ClientModInitializer {
 
@@ -28,6 +31,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+
+		LOGGER.info("Distance Travel client started!");
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("dt_start")
 				.executes(context -> {
@@ -49,6 +54,6 @@ public class DistanceTravelClient implements ClientModInitializer {
 					return 1;
 				})));
 
-		LOGGER.info("Distance Travel client initialized!");
+		LOGGER.info("Distance Travel client finished starting! Have fun with all your epic calculations!");
 	}
 }
