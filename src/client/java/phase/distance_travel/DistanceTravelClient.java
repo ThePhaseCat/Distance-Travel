@@ -12,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class DistanceTravelClient implements ClientModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger("distance_travel");
+
+	Timer timer = new Timer();
 
 	public static boolean isDistanceTravelModeOn = false;
 
@@ -53,6 +56,15 @@ public class DistanceTravelClient implements ClientModInitializer {
 					isDistanceTravelModeOn = false;
 					return 1;
 				})));
+
+		timer.scheduleAtFixedRate(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				LOGGER.info("this should be printing!");
+			}
+		}, 5000, 5000);
 
 		LOGGER.info("Distance Travel client finished starting! Have fun with all your epic calculations!");
 	}
