@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "phase.distance_travel.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ExampleMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
