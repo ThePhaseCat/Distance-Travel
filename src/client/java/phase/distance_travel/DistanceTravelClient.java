@@ -93,7 +93,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			{
 				timerStuff(context);
 			}
-		}, 5000, 5000);
+		}, 2500, 2500);
 	}
 
 	public void end_DT_track(CommandContext<FabricClientCommandSource> context)
