@@ -56,15 +56,6 @@ public class DistanceTravelClient implements ClientModInitializer {
 					return 1;
 				})));
 
-		timer.scheduleAtFixedRate(new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-				LOGGER.info("this should be printing!");
-			}
-		}, 5000, 5000);
-
 		LOGGER.info("Distance Travel client finished starting! Have fun with all your epic calculations!");
 	}
 
@@ -74,6 +65,15 @@ public class DistanceTravelClient implements ClientModInitializer {
 		startZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
 		LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
 		isDistanceTravelModeOn = true;
+		isTimerActive = true;
+		timer.scheduleAtFixedRate(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				timerStuff(context);
+			}
+		}, 5000, 5000);
 	}
 
 	public void end_DT_track(CommandContext<FabricClientCommandSource> context)
@@ -82,7 +82,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		int endZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
 		LOGGER.info("End position set to: " + endXPosition + ", " + endZPosition);
 		int distance = Math.abs(endXPosition - startXPosition);
-		//context.getSource().sendFeedback(Text.of("Distance Travelled: " + distance));
+		context.getSource().sendFeedback(Text.of("Distance Travelled: " + distance));
 		isDistanceTravelModeOn = false;
 	}
 
@@ -98,20 +98,22 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 		else
 		{
-			context.getSource().sendFeedback(Text.of("Distance Travel Mode is currently off. Please use /dt_start to begin tracking."));
+			context.getSource().sendFeedback(Text.of("The following is stats from the last tracking session!"));
 		}
 
 	}
 
-	public void timerStuff()
+	public void timerStuff(CommandContext<FabricClientCommandSource> context)
 	{
 		if(isDistanceTravelModeOn)
 		{
-			//add stuff here
+			context.getSource().sendFeedback(Text.of("dt mode on"));
 		}
 		else
 		{
-			//run logic to end it
+			isTimerActive = false;
+			context.getSource().sendFeedback(Text.of("dt mode off"));
+			timer.cancel();
 		}
 	}
 }
