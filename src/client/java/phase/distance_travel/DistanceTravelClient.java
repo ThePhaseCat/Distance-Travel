@@ -126,7 +126,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		else
 		{
 			isTimerActive = false;
-			context.getSource().sendFeedback(Text.of("dt mode off"));
+			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
 			timer.cancel();
 		}
 	}
