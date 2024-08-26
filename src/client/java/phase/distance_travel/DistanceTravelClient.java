@@ -154,7 +154,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		{
 			isTimerActive = false;
 			timer.cancel();
-			timer.purge();
+			timer = new Timer();
 			//System.out.println("endXPosition: " + endXPosition);
 			//System.out.println("lastXPosition: " + lastXPosition);
 			currentSectionDistanceX = Math.abs(endXPosition - lastXPosition);
