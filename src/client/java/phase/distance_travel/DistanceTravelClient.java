@@ -23,15 +23,27 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public static boolean isTimerActive = false;
 
-	public static int startXPosition = 0;
+	public static int currentXPosition = 0;
 
-	public static int startZPosition = 0;
+	public static int currentZPosition = 0;
+
+	public static int lastXPosition = 0;
+
+	public static int lastZPosition = 0;
 
 	public static int endXPosition = 0;
 
 	public static int endZPosition = 0;
 
-	public static int finalDistance = 0;
+	public static int currentSectionDistanceX = 0;
+
+	public static int currentSectionDistanceZ = 0;
+
+	public static int finalDistanceX = 0;
+
+	public static int finalDistanceZ = 0;
+
+	public static int finalFinalDistance = 0;
 
 	//we do not care about y position at all
 
@@ -68,9 +80,9 @@ public class DistanceTravelClient implements ClientModInitializer {
 			context.getSource().sendFeedback(Text.of("Distance Travel Mode is already on. Please use /dt_end to end tracking."));
 			return;
 		}
-		startXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
-		startZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
-		LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
+		lastXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
+		lastZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+		//LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
 		isDistanceTravelModeOn = true;
 		isTimerActive = true;
 		timer.scheduleAtFixedRate(new TimerTask()
@@ -93,7 +105,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		int endXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 		int endZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
 		LOGGER.info("End position set to: " + endXPosition + ", " + endZPosition);
-		finalDistance = Math.abs(endXPosition - startXPosition);
+		//finalDistance = Math.abs(endXPosition - startXPosition);
 		context.getSource().sendFeedback(Text.of("Wrapping up tracking..."));
 		isDistanceTravelModeOn = false;
 	}
@@ -121,13 +133,38 @@ public class DistanceTravelClient implements ClientModInitializer {
 	{
 		if(isDistanceTravelModeOn)
 		{
-			context.getSource().sendFeedback(Text.of("dt mode on"));
+			currentXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
+			currentZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+			//LOGGER.info("Current position set to: " + currentXPosition + ", " + currentZPosition);
+			currentSectionDistanceX = Math.abs(currentXPosition - lastXPosition);
+			currentSectionDistanceZ = Math.abs(currentZPosition - lastZPosition);
+			finalDistanceX += currentSectionDistanceX;
+			finalDistanceZ += currentSectionDistanceZ;
+			//LOGGER.info("Current x distance is: " + currentSectionDistanceX);
+			//LOGGER.info("Current z distance is: " + currentSectionDistanceZ);
+			lastXPosition = currentXPosition;
+			lastZPosition = currentZPosition;
+
+			//LOGGER.info("final x distance is: " + finalDistanceX);
+			//LOGGER.info("final z distance is: " + finalDistanceZ);
+
 		}
 		else
 		{
 			isTimerActive = false;
-			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
 			timer.cancel();
+			timer.purge();
+			currentSectionDistanceX = Math.abs(endXPosition - lastXPosition);
+			currentSectionDistanceZ = Math.abs(endZPosition - lastZPosition);
+			finalDistanceX += currentSectionDistanceX;
+			finalDistanceZ += currentSectionDistanceZ;
+			LOGGER.info("final x distance is: " + finalDistanceX);
+			LOGGER.info("final z distance is: " + finalDistanceZ);
+			finalFinalDistance = Math.abs(finalDistanceX) + Math.abs(finalDistanceZ);
+			LOGGER.info("Final distance is: " + finalFinalDistance);
+			currentSectionDistanceX = 0;
+			currentSectionDistanceZ = 0;
+			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
 		}
 	}
 }
