@@ -85,6 +85,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		//LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
 		isDistanceTravelModeOn = true;
 		isTimerActive = true;
+		context.getSource().sendFeedback(Text.of("Tracking started!"));
 		timer.scheduleAtFixedRate(new TimerTask()
 		{
 			@Override
@@ -102,9 +103,9 @@ public class DistanceTravelClient implements ClientModInitializer {
 			context.getSource().sendFeedback(Text.of("Distance Travel Mode is not on. Please use /dt_start to start tracking."));
 			return;
 		}
-		int endXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
-		int endZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
-		LOGGER.info("End position set to: " + endXPosition + ", " + endZPosition);
+		endXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
+		endZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+		//LOGGER.info("End position set to: " + endXPosition + ", " + endZPosition);
 		//finalDistance = Math.abs(endXPosition - startXPosition);
 		context.getSource().sendFeedback(Text.of("Wrapping up tracking..."));
 		isDistanceTravelModeOn = false;
@@ -154,12 +155,16 @@ public class DistanceTravelClient implements ClientModInitializer {
 			isTimerActive = false;
 			timer.cancel();
 			timer.purge();
+			//System.out.println("endXPosition: " + endXPosition);
+			//System.out.println("lastXPosition: " + lastXPosition);
 			currentSectionDistanceX = Math.abs(endXPosition - lastXPosition);
 			currentSectionDistanceZ = Math.abs(endZPosition - lastZPosition);
+			//LOGGER.info("Current x distance is: " + currentSectionDistanceX);
+			//LOGGER.info("Current z distance is: " + currentSectionDistanceZ);
 			finalDistanceX += currentSectionDistanceX;
 			finalDistanceZ += currentSectionDistanceZ;
-			LOGGER.info("final x distance is: " + finalDistanceX);
-			LOGGER.info("final z distance is: " + finalDistanceZ);
+			//LOGGER.info("final x distance is: " + finalDistanceX);
+			//LOGGER.info("final z distance is: " + finalDistanceZ);
 			finalFinalDistance = Math.abs(finalDistanceX) + Math.abs(finalDistanceZ);
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
