@@ -149,6 +149,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
 
+			context.getSource().sendFeedback(Text.of("Tracking..."));
+
 		}
 		else
 		{
