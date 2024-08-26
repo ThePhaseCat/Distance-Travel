@@ -31,6 +31,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public static int endZPosition = 0;
 
+	public static int finalDistance = 0;
+
 	//we do not care about y position at all
 
 	@Override
@@ -61,6 +63,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public void start_DT_track(CommandContext<FabricClientCommandSource> context)
 	{
+		if(isDistanceTravelModeOn || isTimerActive)
+		{
+			context.getSource().sendFeedback(Text.of("Distance Travel Mode is already on. Please use /dt_end to end tracking."));
+			return;
+		}
 		startXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 		startZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
 		LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
@@ -78,23 +85,30 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public void end_DT_track(CommandContext<FabricClientCommandSource> context)
 	{
+		if(!isTimerActive)
+		{
+			context.getSource().sendFeedback(Text.of("Distance Travel Mode is not on. Please use /dt_start to start tracking."));
+			return;
+		}
 		int endXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 		int endZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
 		LOGGER.info("End position set to: " + endXPosition + ", " + endZPosition);
-		int distance = Math.abs(endXPosition - startXPosition);
-		context.getSource().sendFeedback(Text.of("Distance Travelled: " + distance));
+		finalDistance = Math.abs(endXPosition - startXPosition);
+		context.getSource().sendFeedback(Text.of("Wrapping up tracking..."));
 		isDistanceTravelModeOn = false;
 	}
 
 	public void DT_stats(CommandContext<FabricClientCommandSource> context)
 	{
-		if(isTimerActive)
-		{
-			context.getSource().sendFeedback(Text.of("Please wait. Wrapping tracking up."));
-		}
 		if(isDistanceTravelModeOn)
 		{
 			context.getSource().sendFeedback(Text.of("Distance Travel Mode is currently on. Please use /dt_end to end tracking."));
+			return;
+		}
+		if(isTimerActive)
+		{
+			context.getSource().sendFeedback(Text.of("Please wait. Wrapping up tracking..."));
+			return;
 		}
 		else
 		{
