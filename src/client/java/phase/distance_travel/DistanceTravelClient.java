@@ -125,7 +125,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 		else
 		{
-			context.getSource().sendFeedback(Text.of("The following is stats from the last tracking session!"));
+			context.getSource().sendFeedback(Text.of("Stats of last tracking session:"));
+			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance()));
 		}
 
 	}
@@ -173,5 +174,10 @@ public class DistanceTravelClient implements ClientModInitializer {
 			currentSectionDistanceZ = 0;
 			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
 		}
+	}
+
+	public String convertDistanceToActualDistance()
+	{
+		return "placeholder";
 	}
 }
