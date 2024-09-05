@@ -1,6 +1,7 @@
 package phase.distance_travel;
 
 import com.mojang.brigadier.context.CommandContext;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -55,6 +56,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+
+		MidnightConfig.init("distance_travel", DT_Config.class);
 
 		LOGGER.info("Distance Travel client started!");
 
