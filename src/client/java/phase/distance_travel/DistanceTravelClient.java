@@ -103,7 +103,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			{
 				timerStuff(context);
 			}
-		}, 2500, 2500);
+		}, DT_Config.timerInterval, DT_Config.timerInterval);
 	}
 
 	public void end_DT_track(CommandContext<FabricClientCommandSource> context)
@@ -162,9 +162,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-
-			context.getSource().sendFeedback(Text.of("Tracking..."));
-			timerAmount += 2500;
+			if(DT_Config.printTrackingMessages)
+			{
+				context.getSource().sendFeedback(Text.of("Tracking..."));
+			}
+			timerAmount += DT_Config.timerInterval;
 		}
 		else
 		{
@@ -185,9 +187,16 @@ public class DistanceTravelClient implements ClientModInitializer {
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
 			currentSectionDistanceZ = 0;
-			timerAmount += 2500;
+			timerAmount += DT_Config.timerInterval;
 			finalPosition = MinecraftClient.getInstance().player.getBlockPos();
-			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
+			if(DT_Config.goToStatsAfterDone)
+			{
+				DT_stats(context);
+			}
+			else
+			{
+				context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
+			}
 		}
 	}
 

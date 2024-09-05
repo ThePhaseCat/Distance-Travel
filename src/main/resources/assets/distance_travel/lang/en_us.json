@@ -1,4 +1,13 @@
 {
   "distance_travel.midnightconfig.title": "Distance Travel Config",
-  "distance_travel.midnightconfig.text1": "Basic Settings"
+  "distance_travel.midnightconfig.text1": "Basic Settings",
+  "distance_travel.midnightconfig.printTrackingMessages": "Print Tracking Messages",
+  "distance_travel.midnightconfig.printTrackingMessages.tooltip": "Prints messages to chat every time stats related to tracking are updated during a tracking session.",
+  "distance_travel.midnightconfig.goToStatsAfterDone": "Fast Stats Access",
+  "distance_travel.midnightconfig.goToStatsAfterDone.tooltip": "Automatically prints the tracking results after a tracking session is completed.",
+  "distance_travel.midnightconfig.text2": "Advanced Settings",
+  "distance_travel.midnightconfig.text3": "Setting this to a low value may impact performance but improve the speed of tracking.",
+  "distance_travel.midnightconfig.text4": "It's best *not* to change this while a tracking session is active.",
+  "distance_travel.midnightconfig.timerInterval": "Timer Interval",
+  "distance_travel.midnightconfig.timerInterval.tooltip": "The interval in milliseconds at which the tracking timer will update the player's stats."
 }
