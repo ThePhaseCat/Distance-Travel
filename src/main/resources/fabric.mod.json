@@ -3,13 +3,13 @@
 	"id": "distance_travel",
 	"version": "${version}",
 	"name": "Distance Travel",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Simple commands to calculate distance traveled over a period of time!",
 	"authors": [
-		"Me!"
+		"ThePhaseCat"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/ThePhaseCat/Distance-Travel",
+		"sources": "https://github.com/ThePhaseCat/Distance-Travel"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/distance_travel/icon.png",
