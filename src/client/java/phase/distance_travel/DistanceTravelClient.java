@@ -205,7 +205,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 	{
 		if(finalFinalDistance >= 1000)
 		{
-			return (finalFinalDistance / 1000) + " km";
+			//return the km value plus two decimal places
+			return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
 		}
 		else
 		{
