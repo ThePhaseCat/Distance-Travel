@@ -30,6 +30,6 @@ The config is done using MidnightLib. If you have ModMenu, you should be able to
 
 ## Contributing
 
-Feel free to contribute to this project as it's available under the CC0-1.0 license. Find any issues or have a suggestion, report it on https://github.com/ThePhaseCat/Distance-Travel!
+Feel free to contribute to this project as it's available under the MIT license. Find any issues or have a suggestion, report it on https://github.com/ThePhaseCat/Distance-Travel!
 
 Thanks to [MidnightLib](https://github.com/TeamMidnightDust/MidnightLib) for the GUI Library!
