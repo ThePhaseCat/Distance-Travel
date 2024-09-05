@@ -26,6 +26,8 @@ A tracking session tracks how far you're going from your start position (which i
 ## Config
 The config is short and simple, containing two options related to tracking messages and opening stats after finishing tracking without having to use an extra command. There's also an option to change tracking intervals!
 
+The config is done using MidnightLib. If you have ModMenu, you should be able to access the config without doing anything!
+
 ## Contributing
 
 Feel free to contribute to this project as it's available under the CC0-1.0 license. Find any issues or have a suggestion, report it on https://github.com/ThePhaseCat/Distance-Travel!
