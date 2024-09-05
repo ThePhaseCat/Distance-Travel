@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 	public static boolean isDistanceTravelModeOn = false;
 
 	public static boolean isTimerActive = false;
+
+	public static double timerAmount = 0;
 
 	public static int currentXPosition = 0;
 
@@ -44,6 +47,9 @@ public class DistanceTravelClient implements ClientModInitializer {
 	public static int finalDistanceZ = 0;
 
 	public static int finalFinalDistance = 0;
+
+	public static BlockPos startPosition = new BlockPos(0, 0, 0);
+	public static BlockPos finalPosition = new BlockPos(0, 0, 0);
 
 	//we do not care about y position at all
 
@@ -85,6 +91,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		//LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
 		isDistanceTravelModeOn = true;
 		isTimerActive = true;
+		startPosition = MinecraftClient.getInstance().player.getBlockPos();
 		context.getSource().sendFeedback(Text.of("Tracking started!"));
 		timer.scheduleAtFixedRate(new TimerTask()
 		{
@@ -125,8 +132,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 		else
 		{
-			context.getSource().sendFeedback(Text.of("Stats of last tracking session:"));
+			context.getSource().sendFeedback(Text.of("Stats of last tracking session..."));
 			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance()));
+			context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()));
+			context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
+			context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
 		}
 
 	}
@@ -151,7 +161,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
 
 			context.getSource().sendFeedback(Text.of("Tracking..."));
-
+			timerAmount += 2500;
 		}
 		else
 		{
@@ -172,12 +182,50 @@ public class DistanceTravelClient implements ClientModInitializer {
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
 			currentSectionDistanceZ = 0;
+			timerAmount += 2500;
+			finalPosition = MinecraftClient.getInstance().player.getBlockPos();
 			context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
 		}
 	}
 
+	//converts the distance to meters or kilometers
 	public String convertDistanceToActualDistance()
 	{
-		return "placeholder";
+		if(finalFinalDistance >= 1000)
+		{
+			return (finalFinalDistance / 1000) + " km";
+		}
+		else
+		{
+			return finalFinalDistance + " m";
+		}
+	}
+
+	public String convertTimerAmountToActualTime()
+	{
+		//convert from milliseconds to seconds
+		timerAmount = timerAmount / 1000;
+
+		if(timerAmount >= 60)
+		{
+			//convert from seconds to minutes
+			timerAmount = timerAmount / 60;
+
+			if(timerAmount >= 60)
+			{
+				//convert from minutes to hours
+				timerAmount = timerAmount / 60;
+
+				return timerAmount + " hours";
+			}
+			else
+			{
+				return timerAmount + " minutes";
+			}
+		}
+		else
+		{
+			return timerAmount + " seconds";
+		}
 	}
 }
