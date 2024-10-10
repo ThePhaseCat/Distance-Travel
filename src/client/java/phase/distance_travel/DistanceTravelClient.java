@@ -91,6 +91,8 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 		lastXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 		lastZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+		finalDistanceX = 0;
+		finalDistanceZ = 0;
 		//LOGGER.info("Start position set to: " + startXPosition + ", " + startZPosition);
 		isDistanceTravelModeOn = true;
 		isTimerActive = true;
