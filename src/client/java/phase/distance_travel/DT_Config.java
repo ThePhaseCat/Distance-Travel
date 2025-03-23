@@ -6,6 +6,8 @@ public class DT_Config extends MidnightConfig
 {
     @Comment(centered = true) public static Comment text1;
 
+    @Entry public static boolean odoMode = false;
+
     @Entry public static boolean printTrackingMessages = false;
 
     @Entry public static boolean goToStatsAfterDone = false;

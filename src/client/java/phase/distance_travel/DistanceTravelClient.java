@@ -138,7 +138,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		else
 		{
 			context.getSource().sendFeedback(Text.of("Stats of last tracking session..."));
-			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance()));
+			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)));
 			context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()));
 			context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
 			context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
@@ -167,6 +167,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 			if(DT_Config.printTrackingMessages)
 			{
 				context.getSource().sendFeedback(Text.of("Tracking..."));
+			}
+			if(DT_Config.odoMode) //do odometer stuff
+			{
+				int odoDistance = (int) Math.sqrt(Math.pow(currentSectionDistanceX, 2) + Math.pow(currentSectionDistanceZ, 2));
+				context.getSource().sendFeedback(Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance)));
 			}
 			timerAmount += DT_Config.timerInterval;
 		}
@@ -203,16 +208,31 @@ public class DistanceTravelClient implements ClientModInitializer {
 	}
 
 	//converts the distance to meters or kilometers
-	public String convertDistanceToActualDistance()
+	public String convertDistanceToActualDistance(int distance)
 	{
-		if(finalFinalDistance >= 1000)
+		if(distance == 0) //final tracking
 		{
-			//return the km value plus two decimal places
-			return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
+			if(finalFinalDistance >= 1000)
+			{
+				//return the km value plus two decimal places
+				return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
+			}
+			else
+			{
+				return finalFinalDistance + " m";
+			}
 		}
 		else
 		{
-			return finalFinalDistance + " m";
+			if(distance >= 1000)
+			{
+				//return the km value plus two decimal places
+				return String.format("%.2f", (double)distance / 1000) + " km";
+			}
+			else
+			{
+				return distance + " m";
+			}
 		}
 	}
 
