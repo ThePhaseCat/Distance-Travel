@@ -190,7 +190,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			finalDistanceZ += currentSectionDistanceZ;
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-			finalFinalDistance = Math.abs(finalDistanceX) + Math.abs(finalDistanceZ);
+			finalFinalDistance = (int) Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
 			currentSectionDistanceZ = 0;
