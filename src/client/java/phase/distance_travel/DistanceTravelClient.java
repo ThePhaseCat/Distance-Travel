@@ -148,31 +148,38 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public void timerStuff(CommandContext<FabricClientCommandSource> context)
 	{
-		if(isDistanceTravelModeOn)
+		if(isDistanceTravelModeOn) //do all tracking stuff
 		{
 			currentXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 			currentZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+
 			//LOGGER.info("Current position set to: " + currentXPosition + ", " + currentZPosition);
+
 			currentSectionDistanceX = Math.abs(currentXPosition - lastXPosition);
 			currentSectionDistanceZ = Math.abs(currentZPosition - lastZPosition);
 			finalDistanceX += currentSectionDistanceX;
 			finalDistanceZ += currentSectionDistanceZ;
+
 			//LOGGER.info("Current x distance is: " + currentSectionDistanceX);
 			//LOGGER.info("Current z distance is: " + currentSectionDistanceZ);
+
 			lastXPosition = currentXPosition;
 			lastZPosition = currentZPosition;
 
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-			if(DT_Config.printTrackingMessages)
+
+			if(DT_Config.printTrackingMessages) //prints the tracking message
 			{
 				context.getSource().sendFeedback(Text.of("Tracking..."));
 			}
+
 			if(DT_Config.odoMode) //do odometer stuff
 			{
 				int odoDistance = (int) Math.sqrt(Math.pow(currentSectionDistanceX, 2) + Math.pow(currentSectionDistanceZ, 2));
 				context.getSource().sendFeedback(Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance)));
 			}
+
 			timerAmount += DT_Config.timerInterval;
 		}
 		else
