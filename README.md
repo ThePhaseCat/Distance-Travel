@@ -5,9 +5,9 @@ Simple commands to calculate distance traveled over a period of time! I made thi
 Thankfully, this mod does exactly that, and in a very simple way!
 
 # Requirements
-Minecraft `>=1.21.0`
+Minecraft `>=1.20.1`
 
-Fabric Loader `>=0.16.2`
+Fabric Loader `>=0.16.10`
 
 Fabric API `>=0.102.0`
 
