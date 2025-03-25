@@ -138,7 +138,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 		else
 		{
 			context.getSource().sendFeedback(Text.of("Stats of last tracking session..."));
-			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance()));
+			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)));
 			context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()));
 			context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
 			context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
@@ -148,26 +148,38 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public void timerStuff(CommandContext<FabricClientCommandSource> context)
 	{
-		if(isDistanceTravelModeOn)
+		if(isDistanceTravelModeOn) //do all tracking stuff
 		{
 			currentXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
 			currentZPosition = MinecraftClient.getInstance().player.getBlockPos().getZ();
+
 			//LOGGER.info("Current position set to: " + currentXPosition + ", " + currentZPosition);
+
 			currentSectionDistanceX = Math.abs(currentXPosition - lastXPosition);
 			currentSectionDistanceZ = Math.abs(currentZPosition - lastZPosition);
 			finalDistanceX += currentSectionDistanceX;
 			finalDistanceZ += currentSectionDistanceZ;
+
 			//LOGGER.info("Current x distance is: " + currentSectionDistanceX);
 			//LOGGER.info("Current z distance is: " + currentSectionDistanceZ);
+
 			lastXPosition = currentXPosition;
 			lastZPosition = currentZPosition;
 
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-			if(DT_Config.printTrackingMessages)
+
+			if(DT_Config.printTrackingMessages) //prints the tracking message
 			{
 				context.getSource().sendFeedback(Text.of("Tracking..."));
 			}
+
+			if(DT_Config.odoMode) //do odometer stuff
+			{
+				int odoDistance = (int) Math.sqrt(Math.pow(currentSectionDistanceX, 2) + Math.pow(currentSectionDistanceZ, 2));
+				context.getSource().sendFeedback(Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance)));
+			}
+
 			timerAmount += DT_Config.timerInterval;
 		}
 		else
@@ -185,7 +197,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			finalDistanceZ += currentSectionDistanceZ;
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-			finalFinalDistance = Math.abs(finalDistanceX) + Math.abs(finalDistanceZ);
+			finalFinalDistance = (int) Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
 			currentSectionDistanceZ = 0;
@@ -203,16 +215,31 @@ public class DistanceTravelClient implements ClientModInitializer {
 	}
 
 	//converts the distance to meters or kilometers
-	public String convertDistanceToActualDistance()
+	public String convertDistanceToActualDistance(int distance)
 	{
-		if(finalFinalDistance >= 1000)
+		if(distance == 0) //final tracking
 		{
-			//return the km value plus two decimal places
-			return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
+			if(finalFinalDistance >= 1000)
+			{
+				//return the km value plus two decimal places
+				return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
+			}
+			else
+			{
+				return finalFinalDistance + " m";
+			}
 		}
 		else
 		{
-			return finalFinalDistance + " m";
+			if(distance >= 1000)
+			{
+				//return the km value plus two decimal places
+				return String.format("%.2f", (double)distance / 1000) + " km";
+			}
+			else
+			{
+				return distance + " m";
+			}
 		}
 	}
 
