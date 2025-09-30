@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'fabric-loom' version '1.11-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -45,7 +45,8 @@ dependencies {
 	include(modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}"))
 
 	// ModMenu is optional, but it's a nice to have for quality of life.
-	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	//modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	
 }
 

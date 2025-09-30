@@ -86,7 +86,9 @@ public class DistanceTravelClient implements ClientModInitializer {
 	{
 		if(isDistanceTravelModeOn || isTimerActive)
 		{
-			context.getSource().sendFeedback(Text.of("Distance Travel Mode is already on. Please use /dt_end to end tracking."));
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Distance Travel Mode is already on. Please use /dt_end to end tracking."))
+			);
 			return;
 		}
 		lastXPosition = MinecraftClient.getInstance().player.getBlockPos().getX();
@@ -127,21 +129,36 @@ public class DistanceTravelClient implements ClientModInitializer {
 	{
 		if(isDistanceTravelModeOn)
 		{
-			context.getSource().sendFeedback(Text.of("Distance Travel Mode is currently on. Please use /dt_end to end tracking."));
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Distance Travel Mode is currently on. Please use /dt_end to end tracking."))
+			);
 			return;
 		}
 		if(isTimerActive)
 		{
-			context.getSource().sendFeedback(Text.of("Please wait. Wrapping up tracking..."));
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Please wait. Wrapping up tracking..."))
+			);
 			return;
 		}
 		else
 		{
-			context.getSource().sendFeedback(Text.of("Stats of last tracking session..."));
-			context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)));
-			context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()));
-			context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
-			context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Stats of last tracking session..."))
+			);
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)))
+			);
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()))
+			);
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()))
+			);
+			MinecraftClient.getInstance().execute(() ->
+					context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()))
+			);
+
 		}
 
 	}
@@ -171,13 +188,17 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 			if(DT_Config.printTrackingMessages) //prints the tracking message
 			{
-				context.getSource().sendFeedback(Text.of("Tracking..."));
+				MinecraftClient.getInstance().execute(() ->
+						context.getSource().sendFeedback((Text.of("Tracking...")))
+				);
 			}
 
 			if(DT_Config.odoMode) //do odometer stuff
 			{
 				int odoDistance = (int) Math.sqrt(Math.pow(currentSectionDistanceX, 2) + Math.pow(currentSectionDistanceZ, 2));
-				context.getSource().sendFeedback(Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance)));
+				MinecraftClient.getInstance().execute(() ->
+						context.getSource().sendFeedback((Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance))))
+				);
 			}
 
 			timerAmount += DT_Config.timerInterval;
@@ -205,11 +226,15 @@ public class DistanceTravelClient implements ClientModInitializer {
 			finalPosition = MinecraftClient.getInstance().player.getBlockPos();
 			if(DT_Config.goToStatsAfterDone)
 			{
-				DT_stats(context);
+				MinecraftClient.getInstance().execute(() ->
+						DT_stats(context)
+				);
 			}
 			else
 			{
-				context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"));
+				MinecraftClient.getInstance().execute(() ->
+						context.getSource().sendFeedback(Text.of("Tracking finished! Please use /dt_stats to see the results!"))
+				);
 			}
 		}
 	}
