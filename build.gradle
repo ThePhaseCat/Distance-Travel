@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.11-SNAPSHOT'
+	id 'fabric-loom' version '1.14-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -12,10 +12,10 @@ base {
 
 repositories {
 
-	maven {
-		url = "https://api.modrinth.com/maven"
-
-	}
+    //for midnight lib
+    maven {
+        url = "https://maven.midnightdust.eu/releases"
+    }
 	// Maven for ModMenu
 	maven { url "https://maven.terraformersmc.com/releases/" }
 }
@@ -42,7 +42,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	//modImplementation include ("maven.modrinth:midnightlib:${project.midnightlib_version}")
-	include(modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}"))
+	//include(modImplementation("maven.modrinth:midnightlib:${project.midnightlib_version}"))
+    modImplementation include ("eu.midnightdust:midnightlib:${project.midnightlib_version}")
 
 	// ModMenu is optional, but it's a nice to have for quality of life.
 	//modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
