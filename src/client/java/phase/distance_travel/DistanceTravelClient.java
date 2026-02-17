@@ -195,9 +195,9 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 			if(DT_Config.odoMode) //do odometer stuff
 			{
-				int odoDistance = (int) Math.sqrt(Math.pow(currentSectionDistanceX, 2) + Math.pow(currentSectionDistanceZ, 2));
+				int odoDistance = (int) Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
 				MinecraftClient.getInstance().execute(() ->
-						context.getSource().sendFeedback((Text.of("Distance since last track: " + convertDistanceToActualDistance(odoDistance))))
+						context.getSource().sendFeedback((Text.of("Distance since start: " + convertDistanceToActualDistance(odoDistance))))
 				);
 			}
 
