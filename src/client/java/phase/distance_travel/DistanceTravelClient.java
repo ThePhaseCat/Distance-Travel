@@ -39,15 +39,15 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public static int endZPosition = 0;
 
-	public static int currentSectionDistanceX = 0;
+	public static double currentSectionDistanceX = 0;
 
-	public static int currentSectionDistanceZ = 0;
+	public static double currentSectionDistanceZ = 0;
 
-	public static int finalDistanceX = 0;
+	public static double finalDistanceX = 0;
 
-	public static int finalDistanceZ = 0;
+	public static double finalDistanceZ = 0;
 
-	public static int finalFinalDistance = 0;
+	public static double finalFinalDistance = 0;
 
 	public static BlockPos startPosition = new BlockPos(0, 0, 0);
 	public static BlockPos finalPosition = new BlockPos(0, 0, 0);
@@ -143,22 +143,13 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 		else
 		{
-			MinecraftClient.getInstance().execute(() ->
-					context.getSource().sendFeedback(Text.of("Stats of last tracking session..."))
-			);
-			MinecraftClient.getInstance().execute(() ->
-					context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)))
-			);
-			MinecraftClient.getInstance().execute(() ->
-					context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()))
-			);
-			MinecraftClient.getInstance().execute(() ->
-					context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()))
-			);
-			MinecraftClient.getInstance().execute(() ->
-					context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()))
-			);
-
+			MinecraftClient.getInstance().execute(() -> {
+                context.getSource().sendFeedback(Text.of("Stats of last tracking session..."));
+                context.getSource().sendFeedback(Text.of("Total distance traveled: " + convertDistanceToActualDistance(0)));
+                context.getSource().sendFeedback(Text.of("Tracking time: " + convertTimerAmountToActualTime()));
+                context.getSource().sendFeedback(Text.of("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
+                context.getSource().sendFeedback(Text.of("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
+            });
 		}
 
 	}
@@ -218,7 +209,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 			finalDistanceZ += currentSectionDistanceZ;
 			//LOGGER.info("final x distance is: " + finalDistanceX);
 			//LOGGER.info("final z distance is: " + finalDistanceZ);
-			finalFinalDistance = (int) Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
+			finalFinalDistance = Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
 			LOGGER.info("Final distance is: " + finalFinalDistance);
 			currentSectionDistanceX = 0;
 			currentSectionDistanceZ = 0;
@@ -271,28 +262,18 @@ public class DistanceTravelClient implements ClientModInitializer {
 	public String convertTimerAmountToActualTime()
 	{
 		//convert from milliseconds to seconds
-		timerAmount = timerAmount / 1000;
+        double seconds = timerAmount / 1000.0;
 
-		if(timerAmount >= 60)
-		{
-			//convert from seconds to minutes
-			timerAmount = timerAmount / 60;
+		if(seconds >= 3600)
+        {
+            return String.format("%.2f", seconds/3600) + " hours";
+        }
+        if(seconds >= 60)
+        {
+            return String.format("%.2f", seconds / 60) + " minutes";
+        }
 
-			if(timerAmount >= 60)
-			{
-				//convert from minutes to hours
-				timerAmount = timerAmount / 60;
-
-				return timerAmount + " hours";
-			}
-			else
-			{
-				return timerAmount + " minutes";
-			}
-		}
-		else
-		{
-			return timerAmount + " seconds";
-		}
+        //default case
+        return seconds + " seconds";
 	}
 }
