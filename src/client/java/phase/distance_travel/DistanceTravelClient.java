@@ -238,11 +238,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 			if(finalFinalDistance >= 1000)
 			{
 				//return the km value plus two decimal places
-				return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
+				return String.format("%.2f", finalFinalDistance / 1000) + " km";
 			}
 			else
 			{
-				return finalFinalDistance + " m";
+				return String.format("%.2f", finalFinalDistance) + " m";
 			}
 		}
 		else
@@ -250,11 +250,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 			if(distance >= 1000)
 			{
 				//return the km value plus two decimal places
-				return String.format("%.2f", (double)distance / 1000) + " km";
+				return String.format("%.2f", distance / 1000) + " km";
 			}
 			else
 			{
-				return distance + " m";
+				return String.format("%.2f", distance) + " m";
 			}
 		}
 	}
