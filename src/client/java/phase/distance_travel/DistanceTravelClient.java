@@ -27,17 +27,17 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public static double timerAmount = 0;
 
-	public static int currentXPosition = 0;
+	public static double currentXPosition = 0;
 
-	public static int currentZPosition = 0;
+	public static double currentZPosition = 0;
 
-	public static int lastXPosition = 0;
+	public static double lastXPosition = 0;
 
-	public static int lastZPosition = 0;
+	public static double lastZPosition = 0;
 
-	public static int endXPosition = 0;
+	public static double endXPosition = 0;
 
-	public static int endZPosition = 0;
+	public static double endZPosition = 0;
 
 	public static double currentSectionDistanceX = 0;
 
@@ -186,7 +186,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 			if(DT_Config.odoMode) //do odometer stuff
 			{
-				int odoDistance = (int) Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
+				double odoDistance = Math.sqrt(Math.pow(finalDistanceX, 2) + Math.pow(finalDistanceZ, 2));
 				MinecraftClient.getInstance().execute(() ->
 						context.getSource().sendFeedback((Text.of("Distance since start: " + convertDistanceToActualDistance(odoDistance))))
 				);
@@ -231,7 +231,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 	}
 
 	//converts the distance to meters or kilometers
-	public String convertDistanceToActualDistance(int distance)
+	public String convertDistanceToActualDistance(double distance)
 	{
 		if(distance == 0) //final tracking
 		{
