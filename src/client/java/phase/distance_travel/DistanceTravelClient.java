@@ -214,34 +214,34 @@ public class DistanceTravelClient implements ClientModInitializer {
 		}
 	}
 
-	//converts the distance to meters or kilometers
-	public String convertDistanceToActualDistance(double distance)
-	{
-		if(distance == 0) //final tracking
-		{
-			if(finalFinalDistance >= 1000)
-			{
-				//return the km value plus two decimal places
-				return String.format("%.2f", (double)finalFinalDistance / 1000) + " km";
-			}
-			else
-			{
-				return finalFinalDistance + " m";
-			}
-		}
-		else
-		{
-			if(distance >= 1000)
-			{
-				//return the km value plus two decimal places
-				return String.format("%.2f", (double)distance / 1000) + " km";
-			}
-			else
-			{
-				return distance + " m";
-			}
-		}
-	}
+    //converts the distance to meters or kilometers
+    public String convertDistanceToActualDistance(double distance)
+    {
+        if(distance == 0) //final tracking
+        {
+            if(finalFinalDistance >= 1000)
+            {
+                //return the km value plus two decimal places
+                return String.format("%.2f", finalFinalDistance / 1000) + " km";
+            }
+            else
+            {
+                return String.format("%.2f", finalFinalDistance) + " m";
+            }
+        }
+        else
+        {
+            if(distance >= 1000)
+            {
+                //return the km value plus two decimal places
+                return String.format("%.2f", distance / 1000) + " km";
+            }
+            else
+            {
+                return String.format("%.2f", distance) + " m";
+            }
+        }
+    }
 
 	public String convertTimerAmountToActualTime()
 	{
