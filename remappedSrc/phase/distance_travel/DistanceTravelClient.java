@@ -144,12 +144,12 @@ public class DistanceTravelClient implements ClientModInitializer {
 		else
 		{
 			Minecraft.getInstance().execute(() -> {
-				context.getSource().sendFeedback(Component.nullToEmpty("Stats of last tracking session..."));
-				context.getSource().sendFeedback(Component.nullToEmpty("Total distance traveled: " + convertDistanceToActualDistance(0)));
-				context.getSource().sendFeedback(Component.nullToEmpty("Tracking time: " + convertTimerAmountToActualTime()));
-				context.getSource().sendFeedback(Component.nullToEmpty("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
-				context.getSource().sendFeedback(Component.nullToEmpty("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
-			});
+                context.getSource().sendFeedback(Component.nullToEmpty("Stats of last tracking session..."));
+                context.getSource().sendFeedback(Component.nullToEmpty("Total distance traveled: " + convertDistanceToActualDistance(0)));
+                context.getSource().sendFeedback(Component.nullToEmpty("Tracking time: " + convertTimerAmountToActualTime()));
+                context.getSource().sendFeedback(Component.nullToEmpty("Start position: " + startPosition.getX() + ", " + startPosition.getY() + ", " + startPosition.getZ()));
+                context.getSource().sendFeedback(Component.nullToEmpty("End position: " + finalPosition.getX() + ", " + finalPosition.getY() + ", " + finalPosition.getZ()));
+            });
 		}
 
 	}
@@ -262,18 +262,18 @@ public class DistanceTravelClient implements ClientModInitializer {
 	public String convertTimerAmountToActualTime()
 	{
 		//convert from milliseconds to seconds
-		double seconds = timerAmount / 1000.0;
+        double seconds = timerAmount / 1000.0;
 
 		if(seconds >= 3600)
-		{
-			return String.format("%.2f", seconds/3600) + " hours";
-		}
-		if(seconds >= 60)
-		{
-			return String.format("%.2f", seconds / 60) + " minutes";
-		}
+        {
+            return String.format("%.2f", seconds/3600) + " hours";
+        }
+        if(seconds >= 60)
+        {
+            return String.format("%.2f", seconds / 60) + " minutes";
+        }
 
-		//default case
-		return seconds + " seconds";
+        //default case
+        return seconds + " seconds";
 	}
 }
