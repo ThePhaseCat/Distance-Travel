@@ -14,12 +14,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DistanceTravelClient implements ClientModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger("distance_travel");
 
-	Timer timer = new Timer(true);
+	private ScheduledExecutorService executor;
 
 	public static boolean isDistanceTravelModeOn = false;
 
@@ -100,14 +103,11 @@ public class DistanceTravelClient implements ClientModInitializer {
 		isTimerActive = true;
 		startPosition = Minecraft.getInstance().player.blockPosition();
 		context.getSource().sendFeedback(Component.nullToEmpty("Tracking started!"));
-		timer.scheduleAtFixedRate(new TimerTask()
-		{
-			@Override
-			public void run()
-			{
-				timerStuff(context);
-			}
-		}, DT_Config.timerInterval, DT_Config.timerInterval);
+		executor = Executors.newSingleThreadScheduledExecutor();
+
+		executor.scheduleAtFixedRate(() -> {
+			timerStuff(context);
+		}, DT_Config.timerInterval, DT_Config.timerInterval, TimeUnit.MILLISECONDS);
 	}
 
 	public void end_DT_track(CommandContext<FabricClientCommandSource> context)
@@ -197,8 +197,10 @@ public class DistanceTravelClient implements ClientModInitializer {
 		else
 		{
 			isTimerActive = false;
-			timer.cancel();
-			timer = new Timer();
+			if(executor != null)
+			{
+				executor.schedule(() -> executor.shutdownNow(), 10, TimeUnit.MILLISECONDS);
+			}
 			//System.out.println("endXPosition: " + endXPosition);
 			//System.out.println("lastXPosition: " + lastXPosition);
 			currentSectionDistanceX = Math.abs(endXPosition - lastXPosition);
