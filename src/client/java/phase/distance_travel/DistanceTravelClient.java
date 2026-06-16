@@ -19,7 +19,7 @@ public class DistanceTravelClient implements ClientModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger("distance_travel");
 
-	Timer timer = new Timer();
+	Timer timer = new Timer(true);
 
 	public static boolean isDistanceTravelModeOn = false;
 
